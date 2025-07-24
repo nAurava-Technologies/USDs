@@ -110,18 +110,19 @@ class MoveRobot(BehaviorScript):
         UsdPhysics.DriveAPI.Get(wheel_rr, "angular").GetTargetVelocityAttr().Set(joint_velocities[3])
         #carb.log_info("Angular: " + str(wheel_fl_joint1.Get()))
 
-        self._ur5.initialize()
+        #self._ur5.initialize()  #NV 07/23
+
         #ur5_KinSolver = KinematicsSolver(self._ur5)
         # move all the robot joints to the indicated position
         #print("Robot joint positions: ", self._ur5.get_applied_action())
         
-        action = ArticulationAction(joint_positions=np.array([0.0, -1.0, 0.0, -2.2, 0.0, 2.4]), joint_indices=np.array([2,0,1,3,8,37]))
-        self._ur5.apply_action(action)
+        #action = ArticulationAction(joint_positions=np.array([0.0, -1.0, 0.0, -2.2, 0.0, 2.4]), joint_indices=np.array([2,0,1,3,8,37])) #NV 07/23
+        #self._ur5.apply_action(action) #NV 07/23
 
         #action = ArticulationAction(joint_positions=np.array([0.0, -1.0, 0.0, -2.2, 0.0, 2.4, 0.8, 0.04, 0.04]), joint_indices=np.array([0,1,2,3,4,5,6,7,8]))
 
         #print("ur_arm_wrist_3_joint :", self._ur5.get_dof_index("ur_arm_wrist_3_joint"))
-        print("ur_arm_wrist_3_joint :", self._ur5.dof_names)
+        #print("ur_arm_wrist_3_joint :", self._ur5.dof_names)  #NV 07/23
 
 
 
