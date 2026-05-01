@@ -1,0 +1,567 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary audioSettings = {
+            double dopplerLimit = 1
+            double dopplerScale = 1
+            string enableDistanceDelay = "off"
+            string enableDoppler = "off"
+            string enableInterauralDelay = "off"
+            double nonSpatialTimeScale = 1
+            double spatialTimeScale = 1
+            double speedOfSound = 340
+        }
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (50011.493293658015, 67.97515045424589, 13.096288862422494)
+                double radius = 177.23157958984376
+            }
+            dictionary Perspective = {
+                double3 position = (-1.1502524204445799, -2.002617964231016, 1.2207962027086245)
+                double3 target = (4.7688152997394395, 7.754354694112585, -5.869624102632216)
+            }
+            dictionary Right = {
+                double3 position = (0, -50072.30000004768, -1.1118284071198233e-11)
+                double radius = 500
+            }
+            dictionary Top = {
+                double3 position = (0.5413536384938422, -0.26082262208837015, 50000.366568817066)
+                double radius = 6.94906005859375
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+        dictionary navmeshSettings = {
+            double agentHeight = 180
+            double agentRadius = 20
+            bool excludeRigidBodies = 1
+            int ver = 1
+            double voxelCeiling = 460
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./wheels.usd"
+            dictionary locked = {
+            }
+            dictionary muteness = {
+            }
+        }
+        dictionary renderSettings = {
+            int "rtx:hydra:curves:splits" = 2
+            bool "rtx:pathtracing:domeLight:primaryRaysEvaluateDomelightMdlDirectly" = 1
+        }
+    }
+    defaultPrim = "Root"
+    endTimeCode = 0
+    metersPerUnit = 1
+    startTimeCode = -1
+    subLayers = [
+        @../Materials/materials.usd@
+    ]
+    timeCodesPerSecond = 60
+    upAxis = "Z"
+)
+
+def Xform "Root" (
+    delete apiSchemas = ["PhysxArticulationAPI", "PhysicsArticulationRootAPI"]
+)
+{
+    quatd xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def Scope "wheel_drive"
+    {
+        def PhysicsRevoluteJoint "wheel_fl_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular", "PhysxJointAPI"]
+        )
+        {
+            float drive:angular:physics:damping = 2500
+            float drive:angular:physics:maxForce = inf
+            float drive:angular:physics:stiffness = 0
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+            uniform token drive:angular:physics:type = "force"
+            float isaacmecanumwheel:angle = -135
+            float isaacmecanumwheel:radius = 0.129
+            uniform token physics:axis = "X"
+            rel physics:body0 = </Root/motor_links/schwinge_fl_link>
+            rel physics:body1 = </Root/omniwheels/omniwheel_fl/omniwheel>
+            float physics:breakForce = inf
+            float physics:breakTorque = inf
+            point3f physics:localPos0 = (-0.0003166577, -0.03022, -0.2697718)
+            point3f physics:localPos1 = (-0.00761, 0, 0)
+            quatf physics:localRot0 = (6.123234e-17, 0, 0, 1)
+            quatf physics:localRot1 = (6.123234e-17, 4.3297803e-17, -0.70710677, 0.70710677)
+            custom float state:angular:physics:position = 165.50629
+            custom float state:angular:physics:velocity = -6.103457e-7
+        }
+
+        def PhysicsRevoluteJoint "wheel_fr_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular", "PhysxJointAPI"]
+        )
+        {
+            float drive:angular:physics:damping = 2500
+            float drive:angular:physics:maxForce = inf
+            float drive:angular:physics:stiffness = 0
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+            uniform token drive:angular:physics:type = "force"
+            float isaacmecanumwheel:angle = -45
+            float isaacmecanumwheel:radius = 0.129
+            uniform token physics:axis = "X"
+            rel physics:body0 = </Root/motor_links/schwinge_fr_link>
+            rel physics:body1 = </Root/omniwheels/omniwheel_fr/omniwheel>
+            float physics:breakForce = inf
+            float physics:breakTorque = inf
+            point3f physics:localPos0 = (0.00032, -0.03022, 0.26977)
+            point3f physics:localPos1 = (0.0076107467, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (0.70710677, 0.70710677, 0, 0)
+            custom float state:angular:physics:position = 135.3792
+            custom float state:angular:physics:velocity = -0.00019877458
+        }
+
+        def PhysicsRevoluteJoint "wheel_rl_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular", "PhysxJointAPI"]
+        )
+        {
+            float drive:angular:physics:damping = 2500
+            float drive:angular:physics:maxForce = inf
+            float drive:angular:physics:stiffness = 0
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+            uniform token drive:angular:physics:type = "force"
+            float isaacmecanumwheel:angle = -45
+            float isaacmecanumwheel:radius = 0.129
+            uniform token physics:axis = "X"
+            rel physics:body0 = </Root/motor_links/schwinge_rl_link>
+            rel physics:body1 = </Root/omniwheels/omniwheel_rl/omniwheel>
+            float physics:breakForce = inf
+            float physics:breakTorque = inf
+            point3f physics:localPos0 = (0.00032, -0.03021709, 0.26977)
+            point3f physics:localPos1 = (0.00761, 0, 0)
+            quatf physics:localRot0 = (6.123234e-17, 0, 0, 1)
+            quatf physics:localRot1 = (6.123234e-17, 4.3297803e-17, -0.70710677, 0.70710677)
+            custom float state:angular:physics:position = 134.56152
+            custom float state:angular:physics:velocity = 0.0000047806975
+        }
+
+        def PhysicsRevoluteJoint "wheel_rr_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular", "PhysxJointAPI"]
+        )
+        {
+            float drive:angular:physics:damping = 2500
+            float drive:angular:physics:maxForce = inf
+            float drive:angular:physics:stiffness = 0
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+            uniform token drive:angular:physics:type = "force"
+            float isaacmecanumwheel:angle = -135
+            float isaacmecanumwheel:radius = 0.129
+            uniform token physics:axis = "X"
+            rel physics:body0 = </Root/motor_links/schwinge_rr_link>
+            rel physics:body1 = </Root/omniwheels/omniwheel_rr/omniwheel>
+            float physics:breakForce = inf
+            float physics:breakTorque = inf
+            point3f physics:localPos0 = (-0.00032, -0.03022, -0.26977)
+            point3f physics:localPos1 = (-0.00761, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (0.70710677, 0.70710677, 0, 0)
+            custom float state:angular:physics:position = 112.882095
+            custom float state:angular:physics:velocity = -0.00008317013
+        }
+    }
+
+    def Scope "omniwheels"
+    {
+        def Xform "omniwheel_fr" (
+            instanceable = false
+            payload = @../Parts/wheel_right.usd@
+            references = None
+        )
+        {
+            float3 xformOp:rotateXYZ = (0, 9.319026e-13, 90)
+            float3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0.7631150903258993, -0.67, 0.0586666011931001)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            over "omniwheel"
+            {
+                vector3f physics:angularVelocity = (1.1847888e-11, -0.18295921, -1.6351887e-8)
+                vector3f physics:velocity = (0.00009724159, -1.0090573e-10, 0.00086040987)
+                quatd xformOp:orient = (0.3791631981404181, 0.9253298164308363, 4.214684616949545e-8, 5.642192564075015e-8)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007290831849026569, -0.004124659105697259, -0.002155351799875499)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_1"
+            {
+                vector3f physics:angularVelocity = (0.0057341345, -0.17230971, 0.008973799)
+                vector3f physics:velocity = (0.00030185518, -1.3017122e-10, 0.0011806117)
+                quatd xformOp:orient = (0.07649354565014385, 0.7029588814622763, -0.5511534669715848, -0.4429756249415728)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.00729083184902557, -0.10439981798783837, -0.06623259407743812)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_2"
+            {
+                vector3f physics:angularVelocity = (0.007473854, -0.1723083, -0.0075883595)
+                vector3f physics:velocity = (0.0003638854, -7.720123e-11, 0.00058967556)
+                quatd xformOp:orient = (0.5019023165551468, -0.49809271513697273, -0.002693878901996468, 0.7071000316649102)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007290831849025348, 0.08065937180860938, -0.08565789216473699)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_3"
+            {
+                vector3f physics:angularVelocity = (-0.009062379, -0.17230706, -0.005598729)
+                vector3f physics:velocity = (-0.0002260403, -8.373818e-11, 0.00066069694)
+                quatd xformOp:orient = (0.7023554694492967, 0.08184734007334395, -0.5545126612334371, 0.4387636219986656)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007290831849028345, 0.058418077424606696, 0.0990840202449262)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_4"
+            {
+                vector3f physics:angularVelocity = (0.010595236, -0.1723057, 0.0011122734)
+                vector3f physics:velocity = (0.00047516046, -1.048564e-10, 0.0009000804)
+                quatd xformOp:orient = (-0.23608395468085833, 0.66653328083067, -0.3043721209525562, -0.6382439689289607)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.0072908318490246815, -0.0165476379837185, -0.12050514609828591)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_5"
+            {
+                vector3f physics:angularVelocity = (-0.010029937, -0.1723043, 0.0035954092)
+                vector3f physics:velocity = (-0.00026046427, -1.1204291e-10, 0.0009886415)
+                quatd xformOp:orient = (-0.5972882041995142, -0.37848258429186055, 0.6899709765002334, -0.15471840905072817)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007290831849028456, -0.04428203682557641, 0.10986426531061529)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_6"
+            {
+                vector3f physics:angularVelocity = (-0.003442954, -0.17230299, 0.010084617)
+                vector3f physics:velocity = (-0.000025529072, -1.3270784e-10, 0.0012200277)
+                quatd xformOp:orient = (-0.3739206377275519, -0.6001547647458563, 0.688772092361561, 0.15997068424603386)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007290831849027235, -0.11674286703721581, 0.03629142849430442)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_7"
+            {
+                vector3f physics:angularVelocity = (-0.0012737432, -0.17230171, -0.010581119)
+                vector3f physics:velocity = (0.00005182223, -6.76199e-11, 0.00048313997)
+                quatd xformOp:orient = (0.6683127153570046, -0.2309988112425632, -0.30922623517094405, 0.6359062817575198)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007290831849026902, 0.11402223725660743, 0.012068465936034917)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+
+        def Xform "omniwheel_fl" (
+            instanceable = false
+            payload = @../Parts/wheel_left.usd@
+            references = None
+        )
+        {
+            float3 xformOp:rotateXYZ = (0, 0, -90)
+            float3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0.763115090325924, 0.67, 0.0586666011931189)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            over "omniwheel"
+            {
+                vector3f physics:angularVelocity = (2.1607127e-8, -0.18125395, 1.0803593e-8)
+                vector3f physics:velocity = (0.00009643264, 1.4673324e-10, 0.00085332093)
+                quatd xformOp:orient = (-0.12565423222944663, 0.9920740969921695, -1.0854846438438083e-16, 3.1447870904746903e-10)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.007293415337916054, 0.004126804872898071, -0.0021531650544889883)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_1"
+            {
+                vector3f physics:angularVelocity = (0.002073155, -0.17065232, 0.010397175)
+                vector3f physics:velocity = (0.000022823664, 1.15607836e-10, 0.00048413512)
+                quatd xformOp:orient = (-0.2051003601154738, 0.6767100688261761, -0.6235307840514996, 0.3334766654053883)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.007293415337915943, -0.1125756325279198, 0.021118000733684687)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_2"
+            {
+                vector3f physics:angularVelocity = (0.0026436574, -0.17065103, -0.010268205)
+                vector3f physics:velocity = (0.0000025676682, 1.5778089e-10, 0.0012178875)
+                quatd xformOp:orient = (0.6141044115859143, 0.350540164616914, 0.18636707916047013, 0.6821031274420752)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.007293415337916054, 0.11936904768600842, 0.027515501367878108)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_3"
+            {
+                vector3f physics:angularVelocity = (-0.01060025, -0.17064951, -0.0002924983)
+                vector3f physics:velocity = (0.00047274274, 1.9287016e-10, 0.0008637117)
+                quatd xformOp:orient = (0.6569511088264708, -0.26156799723264373, 0.6494877146197648, 0.27957670144947544)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.007293415337916054, 0.007407802149204223, -0.12110794277207931)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_4"
+            {
+                vector3f physics:angularVelocity = (-0.0068387785, -0.17064835, 0.0081062745)
+                vector3f physics:velocity = (0.00033918017, 1.5817549e-10, 0.0005655881)
+                quatd xformOp:orient = (0.47840244396612286, -0.5207049753889585, 0.7064720025595354, -0.029912201723454976)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.007293415337915943, -0.08683006186828235, -0.07888547086434444)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_5"
+            {
+                vector3f physics:angularVelocity = (0.00942614, -0.17064694, 0.0048640827)
+                vector3f physics:velocity = (-0.00023810477, 9.722168e-11, 0.0006806882)
+                quatd xformOp:orient = (0.10882441841769641, 0.6986845186981177, -0.41709170265689427, 0.5709918570894009)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.007293415337915943, -0.050441783860775025, 0.1035977905867807)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_6"
+            {
+                vector3f physics:angularVelocity = (-0.006382851, -0.17064573, -0.008473177)
+                vector3f physics:velocity = (0.00032293677, 1.9208524e-10, 0.0011540117)
+                quatd xformOp:orient = (0.7053826624074806, 0.049375919948880145, 0.463864396582441, 0.5336919895289268)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.007293415337916054, 0.09917511324539563, -0.07375505787597975)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_7"
+            {
+                vector3f physics:angularVelocity = (0.009682263, -0.17064428, -0.004337897)
+                vector3f physics:velocity = (-0.00024711905, 1.1538084e-10, 0.001007236)
+                quatd xformOp:orient = (0.40119516864930627, 0.5822757056281471, -0.12804259121004816, 0.6954153680527305)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.007293415337916054, 0.052783268495944946, 0.10644497035725037)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+
+        def Xform "omniwheel_rr" (
+            instanceable = false
+            payload = @../Parts/wheel_left.usd@
+            references = None
+        )
+        {
+            float3 xformOp:rotateXYZ = (0, -6.3611094e-15, 90)
+            float3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-0.7631150760208106, -0.67, 0.05866660119311902)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            over "omniwheel"
+            {
+                vector3f physics:angularVelocity = (-1.5204861e-8, 0.2551784, 1.5209817e-8)
+                vector3f physics:velocity = (-0.00013629193, -1.0052855e-10, 0.001201681)
+                quatd xformOp:orient = (0.5533745099837313, 0.8329325613158994, 1.0282858101727302e-16, 3.205814356254322e-8)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.0072897159606406525, 0.004112931295778721, -0.002262338411975831)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_1"
+            {
+                vector3f physics:angularVelocity = (-0.010483099, 0.24468166, -0.00053308444)
+                vector3f physics:velocity = (0.00039301507, -7.0252484e-11, 0.001228591)
+                quatd xformOp:orient = (0.2871071388145956, 0.6461940517682367, -0.2539142508886541, 0.6599471884148758)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.0072897159606406525, 0.010158213182833165, 0.11658403335792925)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_2"
+            {
+                vector3f physics:angularVelocity = (0.009677475, 0.24468035, -0.0040686075)
+                vector3f physics:velocity = (-0.00062485674, -1.4238585e-10, 0.0014070914)
+                quatd xformOp:orient = (0.6938799261958343, -0.13611712700106038, 0.5868997641424976, 0.39440010472732073)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.0072897159606406525, 0.050231786772158116, -0.1119622135283241)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_3"
+            {
+                vector3f physics:angularVelocity = (0.0018134152, 0.24467883, 0.010341566)
+                vector3f physics:velocity = (-0.00022783705, -7.551989e-11, 0.0006796564)
+                quatd xformOp:orient = (0.3262064170245576, -0.6273648226115642, 0.6742804188365407, -0.21295227074436263)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.0072897159606407635, -0.11309894700393441, -0.022814414811302156)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_4"
+            {
+                vector3f physics:angularVelocity = (-0.0069554057, 0.24467753, 0.007866571)
+                vector3f physics:velocity = (0.00021476553, -5.5603057e-11, 0.00080463156)
+                quatd xformOp:orient = (-0.021698434932072564, 0.7067718130547465, -0.5151091475335269, 0.4844226959176133)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.0072897159606407635, -0.0850356497322059, 0.07656355260593797)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_5"
+            {
+                vector3f physics:angularVelocity = (-0.0061223344, 0.24467649, -0.008532567)
+                vector3f physics:velocity = (0.00017268531, -1.0843565e-10, 0.0016322887)
+                quatd xformOp:orient = (0.539047702260628, 0.45762967268807747, 0.05757158257872908, 0.7047610731604868)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.0072897159606406525, 0.1007999501670861, 0.06711073278171922)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_6"
+            {
+                vector3f physics:angularVelocity = (0.00921942, 0.24467501, 0.0050319005)
+                vector3f physics:velocity = (-0.0006015046, -1.13538234e-10, 0.00094777544)
+                quatd xformOp:orient = (0.5661053347203798, -0.4237004740233132, 0.6999021310307196, 0.10069590504188215)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.0072897159606407635, -0.05289920945510629, -0.10671625227944943)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_7"
+            {
+                vector3f physics:angularVelocity = (0.0028545875, 0.24467382, -0.01010912)
+                vector3f physics:velocity = (-0.0002803103, -1.3993479e-10, 0.0017117294)
+                quatd xformOp:orient = (0.6842231551441105, 0.17842597339853927, 0.35765462298199097, 0.6099885381226703)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0.0072897159606406525, 0.1186343155349755, -0.03460188710408303)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+
+        def Xform "omniwheel_rl" (
+            instanceable = false
+            payload = @../Parts/wheel_right.usd@
+            references = None
+        )
+        {
+            float3 xformOp:rotateXYZ = (0, 9.573469e-13, -90)
+            float3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-0.7631150760207996, 0.67, 0.058666601193100215)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            over "omniwheel"
+            {
+                vector3f physics:angularVelocity = (-3.53978e-8, 0.19796026, -1.5779389e-18)
+                vector3f physics:velocity = (-0.000105393265, 1.13155346e-10, 0.00093193713)
+                quatd xformOp:orient = (-0.38671342215942944, 0.9221999398838308, 4.214684989971991e-8, -2.646802185796081e-9)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007289874285410947, -0.004121991201795572, -0.0021748574198783704)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_1"
+            {
+                vector3f physics:angularVelocity = (-0.0089176195, 0.18737014, -0.005712276)
+                vector3f physics:velocity = (-0.00045160268, 5.190565e-11, 0.00071016)
+                quatd xformOp:orient = (0.44328395348545374, -0.5509083750558237, 0.07610178350493413, 0.7029991589063435)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007289874285409059, 0.060067204431139, -0.10237837896958006)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_2"
+            {
+                vector3f physics:angularVelocity = (0.007554279, 0.1873687, -0.0074236677)
+                vector3f physics:velocity = (0.00018786188, 1.6609983e-10, 0.0006437589)
+                quatd xformOp:orient = (0.7071004871514739, 0.0030877202744526667, -0.5021782679415452, 0.4978115650131931)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007289874285412168, 0.0792857684646473, 0.08270241378530849)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_3"
+            {
+                vector3f physics:angularVelocity = (0.005557165, 0.18736757, 0.009017853)
+                vector3f physics:velocity = (0.000110305285, 1.5238241e-10, 0.001281965)
+                quatd xformOp:orient = (-0.4384558442177263, -0.5547586288975872, 0.7023077675721823, 0.0822382875719548)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007289874285411946, -0.10543111185685539, 0.060254723417609804)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_4"
+            {
+                vector3f physics:angularVelocity = (-0.0010943549, 0.18736619, -0.010537483)
+                vector3f physics:velocity = (-0.00014785933, 1.0598915e-10, 0.00052298314)
+                quatd xformOp:orient = (0.6384151056352728, -0.3040175630982835, -0.23645468605409742, 0.6663997716592818)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.0072898742854106136, 0.11424162764891244, -0.014465562415272123)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_5"
+            {
+                vector3f physics:angularVelocity = (-0.0035865798, 0.18736495, 0.009970101)
+                vector3f physics:velocity = (-0.0002445714, 8.7924126e-11, 0.0013188176)
+                quatd xformOp:orient = (0.15433438124525364, 0.6900591546608394, -0.5970755454492827, -0.3788140109088548)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.0072898742854101695, -0.11609658817902946, -0.042457345289141066)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_6"
+            {
+                vector3f physics:angularVelocity = (-0.010032296, 0.18736349, 0.0034124958)
+                vector3f physics:velocity = (-0.00049464346, 4.3207906e-11, 0.0010643404)
+                quatd xformOp:orient = (-0.16035493260303563, 0.6886849546670574, -0.3735852143586754, -0.6003610717040969)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007289874285409059, -0.04244294981614494, -0.11483588756337774)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "Roller_7"
+            {
+                vector3f physics:angularVelocity = (0.010520504, 0.18736218, 0.0012783768)
+                vector3f physics:velocity = (0.00030275632, 1.86565e-10, 0.0009815377)
+                quatd xformOp:orient = (-0.6357358673924312, -0.30958138840187505, 0.6684392485569036, -0.23062576147222322)
+                float3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-0.007289874285412834, -0.018477769895948404, 0.11595606862291682)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def "SectionTools" (
+        hide_in_stage_window = true
+    )
+    {
+        def Xform "Section_Tool_Object" (
+            prepend variantSets = "sectionVariant"
+        )
+        {
+            custom bool primvars:section:direction:top = 0
+            token visibility = "invisible"
+            matrix4d xformOp:transform = ( (-4.440892098500626e-16, 2.220446049250313e-16, 1.0000000000000002, 0), (1.0000000000000002, -4.440892098500626e-16, 2.220446049250313e-16, 0), (2.220446049250313e-16, 1.0000000000000002, -4.440892098500626e-16, 0), (-0.04430380255542808, -0.4067067591763493, 0.04242843188333413, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }
+}
+
+over "Render" (
+    hide_in_stage_window = true
+)
+{
+}
+

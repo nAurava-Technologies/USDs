@@ -1,0 +1,931 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (5, 0, 0)
+                double radius = 5.883331298828125
+            }
+            dictionary Perspective = {
+                double3 position = (2.0551617674460294, 1.7126348294777618, 2.740215681020623)
+                double3 target = (5.849667417123783e-9, -5.800623825713558e-8, 3.186663910526022e-8)
+            }
+            dictionary Right = {
+                double3 position = (0, -5, 0)
+                double radius = 5
+            }
+            dictionary Top = {
+                double3 position = (0, 0, 5)
+                double radius = 2.8598588943481444
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+        dictionary metricsAssembler = {
+            dictionary "/World/Pipe_Weld" = {
+            }
+            int version = 1
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./inspection_robot.usda"
+            dictionary locked = {
+            }
+            dictionary muteness = {
+            }
+        }
+        dictionary physicsSettings = {
+            int "/persistent/simulation/minFrameRate" = 60
+        }
+        int refinementOverrideImplVersion = 0
+        dictionary renderSettings = {
+        }
+    }
+    defaultPrim = "World"
+    endTimeCode = 1000000
+    metersPerUnit = 1
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    def PhysicsScene "PhysicsScene" (
+        prepend apiSchemas = ["PhysxSceneAPI"]
+    )
+    {
+        vector3f physics:gravityDirection = (0, 0, -1)
+        float physics:gravityMagnitude = 9.81
+        uniform token physxScene:broadphaseType = "MBP"
+        bool physxScene:enableCCD = 1
+        bool physxScene:enableGPUDynamics = 0
+        bool physxScene:enableStabilization = 0
+        uint physxScene:gpuFoundLostAggregatePairsCapacity = 4020
+        uniform token physxScene:solverType = "TGS"
+        uint physxScene:timeStepsPerSecond = 60
+    }
+
+    def Xform "GroundPlane"
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Mesh "CollisionMesh"
+        {
+            uniform bool doubleSided = 0
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 2, 3]
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)]
+            point3f[] points = [(-25, -25, 0), (25, -25, 0), (25, 25, 0), (-25, 25, 0)]
+            color3f[] primvars:displayColor = [(0.5, 0.5, 0.5)]
+            texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1)] (
+                interpolation = "varying"
+            )
+        }
+
+        def Plane "CollisionPlane" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            uniform token purpose = "guide"
+        }
+    }
+
+    def Scope "Looks"
+    {
+        def Material "Stainless_Steel_Brushed"
+        {
+            token outputs:mdl:displacement.connect = </World/Looks/Stainless_Steel_Brushed/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Looks/Stainless_Steel_Brushed/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Looks/Stainless_Steel_Brushed/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Metal/Stainless_Steel_Brushed.mdl?Stainless_Steel_Brushed@
+                uniform token info:mdl:sourceAsset:subIdentifier = "Stainless_Steel_Brushed"
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
+
+        def Material "Stainless_Steel_Brushed_01"
+        {
+            token outputs:mdl:displacement.connect = </World/Looks/Stainless_Steel_Brushed_01/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Looks/Stainless_Steel_Brushed_01/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Looks/Stainless_Steel_Brushed_01/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Metal/Stainless_Steel_Brushed.mdl?Stainless_Steel_Brushed@
+                uniform token info:mdl:sourceAsset:subIdentifier = "Stainless_Steel_Brushed"
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
+    }
+
+    def "Pipe_Weld" (
+        delete payload = [
+            @../../../../../nAurava/Projects/Energy/Nuclear/Pipe Weld.usd@,
+            @../Pipe Weld.usd@
+        ]
+        prepend payload = @./Pipe Weld.usda@
+    )
+    {
+        token visibility = "inherited"
+        quatf xformOp:orient = (6.123234e-17, 0, 0, 1)
+        float3 xformOp:scale = (2000, 2000, 2000)
+        double3 xformOp:translate = (0.8876001515776805, 0.501119109950361, 0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "tn__PipeWeld_i8" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = None (
+                bindMaterialAs = "strongerThanDescendants"
+            )
+
+            over "tn__Part1_f5" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </World/Looks/Stainless_Steel_Brushed> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+                token visibility = "inherited"
+            }
+        }
+
+        over "Prototypes"
+        {
+            over "tn__Part1_f5" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = None (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
+        }
+    }
+
+    def DomeLight "DomeLight" (
+        prepend apiSchemas = ["ShapingAPI"]
+    )
+    {
+        float inputs:intensity = 1000
+        float inputs:shaping:cone:angle = 180
+        float inputs:shaping:cone:softness
+        float inputs:shaping:focus
+        color3f inputs:shaping:focusTint
+        asset inputs:shaping:ies:file
+        token inputs:texture:format = "latlong"
+        token visibility = "invisible"
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "frame_prim" (
+        prepend payload = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/UIElements/frame_prim.usd@
+    )
+    {
+        token visibility = "invisible"
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (0.1, 0.1, 0.1)
+        double3 xformOp:translate = (0, 0, 0.369)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Frame"
+        {
+            over "Z_tip"
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 0, 1.25)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def "frame_prim_01" (
+        prepend payload = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/UIElements/frame_prim.usd@
+    )
+    {
+        token visibility = "invisible"
+        quatf xformOp:orient = (0.70710677, 0.70710677, 0, 0)
+        double3 xformOp:rotateZYX = (0, 0, 0)
+        float3 xformOp:scale = (-0.1, 0.1, 0.1)
+        double3 xformOp:translate = (0, 0, 0.369)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Frame"
+        {
+            over "Z_tip"
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 0, 1.25)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def "frame_prim_02" (
+        prepend payload = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/UIElements/frame_prim.usd@
+    )
+    {
+        token visibility = "invisible"
+        quatf xformOp:orient = (0.5, 0.5, 0.5, -0.5)
+        double3 xformOp:rotateZYX = (0, 0, 0)
+        float3 xformOp:scale = (0.2, 0.2, 0.2)
+        double3 xformOp:translate = (0.16087968571185818, 0.024999416172280242, 0.7967060178016088)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Frame"
+        {
+            over "Z_tip"
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 0, 1.25)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def "frame_prim_03" (
+        prepend payload = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/UIElements/frame_prim.usd@
+    )
+    {
+        token visibility = "invisible"
+        quatf xformOp:orient = (0.70710677, 0.70710677, 0, 0)
+        double3 xformOp:rotateZYX = (0, 0, 0)
+        float3 xformOp:scale = (0.1, 0.1, 0.1)
+        double3 xformOp:translate = (0.5123093175208915, 0.026748094327028446, 0.8161712155351657)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Frame"
+        {
+            over "Z_tip"
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 0, 1.25)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def "frame_prim_04" (
+        prepend payload = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/UIElements/frame_prim.usd@
+    )
+    {
+        token visibility = "invisible"
+        quatf xformOp:orient = (6.123234e-17, 1, 0, 0)
+        double3 xformOp:rotateZYX = (0, 0, 0)
+        float3 xformOp:scale = (0.08, 0.08, 0.08)
+        double3 xformOp:translate = (0.485463010477862, 0.11248122897701589, 0.7987961150573036)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Frame"
+        {
+            over "Z_tip"
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 0, 1.25)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def "frame_prim_05" (
+        prepend payload = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/UIElements/frame_prim.usd@
+    )
+    {
+        token visibility = "invisible"
+        quatf xformOp:orient = (0.5, 0.5, 0.5, 0.5)
+        double3 xformOp:rotateZYX = (0, 0, 0)
+        float3 xformOp:scale = (0.08, 0.08, 0.08)
+        double3 xformOp:translate = (0.4913316321157334, 0.12045022059918303, 0.7106595600884421)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Frame"
+        {
+            over "Z_tip"
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 0, 1.25)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def "frame_prim_06" (
+        prepend payload = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/UIElements/frame_prim.usd@
+    )
+    {
+        token visibility = "invisible"
+        quatf xformOp:orient = (0.5, 0.5, 0.5, 0.5)
+        double3 xformOp:rotateZYX = (0, 0, 0)
+        float3 xformOp:scale = (0.08, 0.08, 0.08)
+        double3 xformOp:translate = (0.5402935441981396, 0.08794747288482241, 0.6865359236193596)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Frame"
+        {
+            over "Z_tip"
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 0, 1.25)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def "frame_prim_A" (
+        prepend payload = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/UIElements/frame_prim.usd@
+    )
+    {
+        token visibility = "inherited"
+        quatf xformOp:orient = (0.70710677, 0, 0, 0.70710677)
+        float3 xformOp:scale = (0.1, 0.1, 0.1)
+        double3 xformOp:translate = (0, 0, 0.369)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Frame"
+        {
+            over "Z_tip"
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 0, 1.25)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def "ridgeback_ur5e" (
+        prepend apiSchemas = ["OmniScriptingAPI"]
+        delete payload = @../ridgeback_ur5_modified.usd@
+        prepend payload = @./ridgeback_ur5_modified.usda@
+    )
+    {
+        custom string exposedVar:exampleBehavior:targetPrimPath = "" (
+            doc = "The path of the target prim to look at. If specified, it has priority over the target location."
+        )
+        custom vector3d exposedVar:exampleBehavior:targetVelocity = (0, 0, 0) (
+            doc = "The 3D vector specifying the velocities."
+        )
+        uniform asset[] omni:scripting:scripts = [@../move_robot.py@] (
+            customData = {
+                dictionary fileExts = {
+                    string "*.py" = "Python File"
+                }
+            }
+        )
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0.029999999329447746)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "base_link" (
+            prepend apiSchemas = ["PhysxRigidBodyAPI"]
+        )
+        {
+            bool physics:kinematicEnabled = 0
+            float physics:mass = 0
+            int physxRigidBody:lockedPosAxis = 0
+            int physxRigidBody:lockedRotAxis = 0
+            token visibility = "inherited"
+
+            over "Looks"
+            {
+                token visibility = "invisible"
+            }
+
+            over "ur_arm_shoulder_pan_joint"
+            {
+                float drive:angular:physics:damping = 0.378
+                float drive:angular:physics:maxForce = 150
+                float drive:angular:physics:stiffness = 9400
+                float state:angular:physics:position = -0.00064227876
+                float state:angular:physics:velocity = -0.94558966
+                token visibility = "invisible"
+            }
+
+            over "visuals"
+            {
+                over "mesh_8"
+                {
+                    token visibility = "inherited"
+                }
+            }
+
+            over "shoulder_pan_joint"
+            {
+                float state:angular:physics:position = -0.00064227876
+                float state:angular:physics:velocity = -0.94558966
+            }
+        }
+
+        over "wheels"
+        {
+            token visibility = "invisible"
+
+            over "omniwheels"
+            {
+                over "omniwheel_fl"
+                {
+                    token visibility = "inherited"
+
+                    over "omniwheel"
+                    {
+                    }
+
+                    over "Roller_1"
+                    {
+                    }
+
+                    over "Roller_2"
+                    {
+                    }
+
+                    over "Roller_3"
+                    {
+                    }
+
+                    over "Roller_4"
+                    {
+                    }
+
+                    over "Roller_5"
+                    {
+                    }
+
+                    over "Roller_6"
+                    {
+                    }
+
+                    over "Roller_7"
+                    {
+                    }
+                }
+
+                over "omniwheel_fr"
+                {
+                    over "omniwheel"
+                    {
+                    }
+
+                    over "Roller_1"
+                    {
+                    }
+
+                    over "Roller_2"
+                    {
+                    }
+
+                    over "Roller_3"
+                    {
+                    }
+
+                    over "Roller_4"
+                    {
+                    }
+
+                    over "Roller_5"
+                    {
+                    }
+
+                    over "Roller_6"
+                    {
+                    }
+
+                    over "Roller_7"
+                    {
+                    }
+                }
+
+                over "omniwheel_rl"
+                {
+                    token visibility = "inherited"
+
+                    over "omniwheel"
+                    {
+                    }
+
+                    over "Roller_1"
+                    {
+                    }
+
+                    over "Roller_2"
+                    {
+                    }
+
+                    over "Roller_3"
+                    {
+                    }
+
+                    over "Roller_4"
+                    {
+                    }
+
+                    over "Roller_5"
+                    {
+                    }
+
+                    over "Roller_6"
+                    {
+                    }
+
+                    over "Roller_7"
+                    {
+                    }
+                }
+
+                over "omniwheel_rr"
+                {
+                    token visibility = "inherited"
+
+                    over "omniwheel"
+                    {
+                    }
+
+                    over "Roller_1"
+                    {
+                    }
+
+                    over "Roller_2"
+                    {
+                    }
+
+                    over "Roller_3"
+                    {
+                    }
+
+                    over "Roller_4"
+                    {
+                    }
+
+                    over "Roller_5"
+                    {
+                    }
+
+                    over "Roller_6"
+                    {
+                    }
+
+                    over "Roller_7"
+                    {
+                    }
+                }
+            }
+
+            over "wheel_drive"
+            {
+                token visibility = "invisible"
+
+                over "wheel_fl_joint"
+                {
+                    float drive:angular:physics:targetVelocity = 0
+                    float state:angular:physics:position = 165.50629
+                    float state:angular:physics:velocity = -6.103457e-7
+                }
+
+                over "wheel_fr_joint"
+                {
+                    float drive:angular:physics:targetVelocity = 0
+                    float state:angular:physics:position = 135.3792
+                    float state:angular:physics:velocity = -0.00019877458
+                }
+
+                over "wheel_rl_joint"
+                {
+                    float drive:angular:physics:targetVelocity = 0
+                    float state:angular:physics:position = 134.56152
+                    float state:angular:physics:velocity = 0.0000047806975
+                }
+
+                over "wheel_rr_joint"
+                {
+                    float drive:angular:physics:targetVelocity = 0
+                    float state:angular:physics:position = 112.882095
+                    float state:angular:physics:velocity = -0.00008317013
+                }
+            }
+
+            over "Looks"
+            {
+                token visibility = "invisible"
+            }
+        }
+
+        over "ur_arm_upper_arm_link"
+        {
+            token visibility = "inherited"
+
+            over "ur_arm_elbow_joint"
+            {
+                float drive:angular:physics:damping = 4
+                float drive:angular:physics:maxForce = 150
+                float drive:angular:physics:stiffness = 10230
+                float state:angular:physics:position = 75.325584
+                float state:angular:physics:velocity = -5.6765985
+            }
+
+            over "elbow_joint"
+            {
+                float state:angular:physics:position = 75.325584
+                float state:angular:physics:velocity = -5.6765985
+            }
+        }
+
+        over "ur_arm_shoulder_link"
+        {
+            token visibility = "inherited"
+
+            over "ur_arm_shoulder_lift_joint"
+            {
+                float drive:angular:physics:damping = 0.41
+                float drive:angular:physics:maxForce = 150
+                float drive:angular:physics:stiffness = 10020
+                float drive:angular:physics:targetPosition = -90
+                float state:angular:physics:position = -74.42096
+                float state:angular:physics:velocity = -4.413627
+            }
+
+            over "shoulder_lift_joint"
+            {
+                float state:angular:physics:position = -74.42096
+                float state:angular:physics:velocity = -4.413627
+            }
+        }
+
+        over "ur_arm_forearm_link"
+        {
+            token visibility = "inherited"
+            quatd xformOp:orient = (0.005602390086625089, -0.005561829094466215, -0.7070848365492125, -0.7070846577352777)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0.10973277688026428, -0.00019429996609687805, 0.7785448431968689)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ur_arm_wrist_1_joint"
+            {
+                float drive:angular:physics:damping = 1.58
+                float drive:angular:physics:maxForce = 28
+                float drive:angular:physics:stiffness = 3940
+                float state:angular:physics:position = 0.0023828656
+                float state:angular:physics:velocity = -0.23567669
+            }
+
+            over "wrist_1_joint"
+            {
+                float state:angular:physics:position = 0.0023828656
+                float state:angular:physics:velocity = -0.23567669
+            }
+        }
+
+        over "ur_arm_wrist_1_link"
+        {
+            token visibility = "inherited"
+
+            over "ur_arm_wrist_2_joint"
+            {
+                float drive:angular:physics:damping = 0.06
+                float drive:angular:physics:maxForce = 28
+                float drive:angular:physics:stiffness = 3940
+                float state:angular:physics:position = 89.99982
+                float state:angular:physics:velocity = -0.007369917
+            }
+
+            over "wrist_2_joint"
+            {
+                float state:angular:physics:position = 89.99982
+                float state:angular:physics:velocity = -0.007369917
+            }
+        }
+
+        over "ur_arm_wrist_2_link"
+        {
+            token visibility = "inherited"
+
+            over "ur_arm_wrist_3_joint"
+            {
+                float drive:angular:physics:damping = 0.004
+                float drive:angular:physics:maxForce = 28
+                float drive:angular:physics:stiffness = 1000
+                float state:angular:physics:position = -1.5443279e-8
+                float state:angular:physics:velocity = -0.0000022849083
+            }
+
+            over "wrist_3_joint"
+            {
+                float state:angular:physics:position = -1.5443279e-8
+                float state:angular:physics:velocity = -0.0000022849083
+            }
+        }
+
+        over "ur_arm_wrist_3_link"
+        {
+            token visibility = "inherited"
+
+            def Xform "end_effector"
+            {
+                quatd xformOp:orient = (1, 0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def SphereLight "SphereLight"
+    {
+        float inputs:intensity = 100000
+        float inputs:radius = 2
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (6.5, 0, 12)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Xform "target" (
+        prepend references = @https://omniverse-content-staging.s3-us-west-2.amazonaws.com/Assets/Isaac/5.0/Isaac/Props/UIElements/frame_prim.usd@
+    )
+    {
+        quatd xformOp:orient = (6.123233995736766e-17, 6.123233995736766e-17, 1, 6.123233995736766e-17)
+        double3 xformOp:scale = (0.03999999910593033, 0.03999999910593033, 0.03999999910593033)
+        double3 xformOp:translate = (0.30000001192092884, -7.882583484764769e-17, 0.657917112431328)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+}
+
+def Xform "Environment"
+{
+    token visibility = "inherited"
+    quatd xformOp:orient = (1, 0, 0, 0)
+    double3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def DistantLight "defaultLight" (
+        prepend apiSchemas = ["ShapingAPI"]
+    )
+    {
+        float inputs:angle = 1
+        float inputs:intensity = 3000
+        float inputs:shaping:cone:angle = 180
+        float inputs:shaping:cone:softness
+        float inputs:shaping:focus
+        color3f inputs:shaping:focusTint
+        asset inputs:shaping:ies:file
+        quatd xformOp:orient = (0.6532814824381883, 0.27059805007309856, 0.27059805007309856, 0.6532814824381883)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+}
+
+def "Viewport_Measure" (
+    hide_in_stage_window = true
+    no_delete = true
+)
+{
+    def "measurement_point_to_point_05" (
+        no_delete = true
+    )
+    {
+        custom vector3d[] measure:compute:points = [(0.3137075006961823, 0.2700000703334809, 0.09805376380681993), (-0.31445512175560003, 0.26999995112419134, 0.09790789633989336)]
+        custom double measure:compute:primary = 0.6281626393879475
+        custom double[] measure:compute:secondary = []
+        custom vector3d[] measure:meta:local_points = [(0.497948413803464, 0.5000001302471868, 0.48053763806819927), (-0.4991351138977778, 0.49999990948924317, 0.4790789633989335)]
+        custom int[] measure:meta:prim_path_indieces = [0, 0]
+        custom rel measure:meta:prim_paths = </World/ridgeback_ur5e/Cube>
+        custom int measure:meta:tool_mode = 0
+        custom int measure:meta:tool_sub_mode = -1
+        custom token measure:prop:axis_display = "NONE" (
+            allowedTokens = ["NONE", "WORLD", "LOCAL"]
+        )
+        custom color4f measure:prop:label_color = (0, 1, 1, 1)
+        custom token measure:prop:label_size = "MEDIUM" (
+            allowedTokens = ["SMALL", "MEDIUM", "LARGE", "EXTRA_LARGE"]
+        )
+        custom string measure:prop:name = "measurement_point_to_point_05"
+        custom token measure:prop:precision = "HUNDRETH" (
+            allowedTokens = ["INTEGER", "TENTH", "HUNDRETH", "THOUSANDTH", "TEN_THOUSANDTH", "HUNDRED_THOUSANDTH"]
+        )
+        custom token measure:prop:unit = "METERS" (
+            allowedTokens = ["CENTIMETERS", "MILLIMETERS", "DECIMETERS", "METERS", "KILOMETERS", "INCHES", "FEET", "MILES"]
+        )
+        custom bool measure:prop:visible = 1
+        custom int measure:uuid = 16347201
+    }
+
+    def "measurement_point_to_point" (
+        no_delete = true
+    )
+    {
+        custom vector3d[] measure:compute:points = [(0.31407970190048223, -0.2700000107288361, 0.09898127168416979), (0.31377056241035467, 0.26999995112419134, 0.09720980674028398)]
+        custom double measure:compute:primary = 0.5400029559701899
+        custom double[] measure:compute:secondary = []
+        custom vector3d[] measure:meta:local_points = [(0.49853920936584484, -0.500000019868215, 0.4898127168416978), (0.4980485117624677, 0.49999990948924317, 0.47209806740283977)]
+        custom int[] measure:meta:prim_path_indieces = [0, 0]
+        custom rel measure:meta:prim_paths = </World/ridgeback_ur5e/Cube>
+        custom int measure:meta:tool_mode = 0
+        custom int measure:meta:tool_sub_mode = -1
+        custom token measure:prop:axis_display = "NONE" (
+            allowedTokens = ["NONE", "WORLD", "LOCAL"]
+        )
+        custom color4f measure:prop:label_color = (0, 1, 1, 1)
+        custom token measure:prop:label_size = "MEDIUM" (
+            allowedTokens = ["SMALL", "MEDIUM", "LARGE", "EXTRA_LARGE"]
+        )
+        custom string measure:prop:name = "measurement_point_to_point"
+        custom token measure:prop:precision = "HUNDRETH" (
+            allowedTokens = ["INTEGER", "TENTH", "HUNDRETH", "THOUSANDTH", "TEN_THOUSANDTH", "HUNDRED_THOUSANDTH"]
+        )
+        custom token measure:prop:unit = "METERS" (
+            allowedTokens = ["CENTIMETERS", "MILLIMETERS", "DECIMETERS", "METERS", "KILOMETERS", "INCHES", "FEET", "MILES"]
+        )
+        custom bool measure:prop:visible = 1
+        custom int measure:uuid = 31692775
+    }
+}
+
+def "Render" (
+    hide_in_stage_window = true
+    no_delete = true
+)
+{
+    def "OmniverseKit"
+    {
+        def "HydraTextures" (
+            hide_in_stage_window = true
+            no_delete = true
+        )
+        {
+            def RenderProduct "omni_kit_widget_viewport_ViewportTexture_0" (
+                prepend apiSchemas = ["OmniRtxSettingsCommonAdvancedAPI_1", "OmniRtxSettingsRtAdvancedAPI_1", "OmniRtxSettingsPtAdvancedAPI_1", "OmniRtxPostColorGradingAPI_1", "OmniRtxPostChromaticAberrationAPI_1", "OmniRtxPostBloomPhysicalAPI_1", "OmniRtxPostMatteObjectAPI_1", "OmniRtxPostCompositingAPI_1", "OmniRtxPostDofAPI_1", "OmniRtxPostMotionBlurAPI_1", "OmniRtxPostTvNoiseAPI_1", "OmniRtxPostTonemapIrayReinhardAPI_1", "OmniRtxPostDebugSettingsAPI_1", "OmniRtxDebugSettingsAPI_1"]
+                hide_in_stage_window = true
+                no_delete = true
+            )
+            {
+                rel camera = </OmniverseKit_Persp>
+                token omni:rtx:background:source:texture:textureMode = "repeatMirrored"
+                token omni:rtx:background:source:type = "domeLight"
+                bool omni:rtx:dlss:frameGeneration = 0
+                bool omni:rtx:material:db:nonVisualMaterialCSV:enabled = 0
+                string omni:rtx:material:db:rtSensorNameToIdMap = "DefaultMaterial:0;AsphaltStandardMaterial:1;AsphaltWeatheredMaterial:2;VegetationGrassMaterial:3;WaterStandardMaterial:4;GlassStandardMaterial:5;FiberGlassMaterial:6;MetalAlloyMaterial:7;MetalAluminumMaterial:8;MetalAluminumOxidizedMaterial:9;PlasticStandardMaterial:10;RetroMarkingsMaterial:11;RetroSignMaterial:12;RubberStandardMaterial:13;SoilClayMaterial:14;ConcreteRoughMaterial:15;ConcreteSmoothMaterial:16;OakTreeBarkMaterial:17;FabricStandardMaterial:18;PlexiGlassStandardMaterial:19;MetalSilverMaterial:20"
+                bool omni:rtx:material:db:syncLoads = 1
+                token omni:rtx:post:dlss:execMode = "performance"
+                bool omni:rtx:post:registeredCompositing:invertColorCorrection = 1
+                bool omni:rtx:post:registeredCompositing:invertToneMap = 1
+                bool omni:rtx:pt:lightcache:cached:dontResolveConflicts = 1
+                int omni:rtx:pt:maxSamplesPerLaunch = 2073600
+                int omni:rtx:pt:mgpu:maxPixelsPerRegionExponent = 12
+                color3f omni:rtx:rt:ambientLight:color = (0.1, 0.1, 0.1)
+                bool omni:rtx:rt:demoire = 0
+                bool omni:rtx:rt:ecoMode:enabled
+                bool omni:rtx:rt:lightcache:spatialCache:dontResolveConflicts = 1
+                bool omni:rtx:scene:hydra:materialSyncLoads = 1
+                bool omni:rtx:scene:hydra:mdlMaterialWarmup = 1
+                uint omni:rtx:viewTile:limit = 4294967295
+                rel orderedVars = </Render/Vars/LdrColor>
+                custom bool overrideClipRange = 0
+                uniform int2 resolution = (1280, 720)
+            }
+        }
+    }
+
+    def RenderSettings "OmniverseGlobalRenderSettings" (
+        prepend apiSchemas = ["OmniRtxSettingsGlobalRtAdvancedAPI_1", "OmniRtxSettingsGlobalPtAdvancedAPI_1"]
+        no_delete = true
+    )
+    {
+        rel products = </Render/OmniverseKit/HydraTextures/omni_kit_widget_viewport_ViewportTexture_0>
+    }
+
+    def "Vars"
+    {
+        def RenderVar "LdrColor" (
+            hide_in_stage_window = true
+            no_delete = true
+        )
+        {
+            uniform string sourceName = "LdrColor"
+        }
+    }
+}
+
