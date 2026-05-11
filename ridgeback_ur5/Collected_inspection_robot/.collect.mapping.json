@@ -1,0 +1,47 @@
+{
+    "version": "1.0",
+    "file_records": [
+        {
+            "source_url": "D:/NVidia/Omniverse/IsaacSim/Ridgeback/USDs/ridgeback_ur5/move_robot.py",
+            "source_hash": "2d706dbbf5d0bb35365c5e121c07cfc8f8267341",
+            "target_url": "./SubUSDs/textures/move_robot.py",
+            "target_hash": "2d706dbbf5d0bb35365c5e121c07cfc8f8267341"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Metal/Stainless_Steel_Brushed.mdl?Stainless_Steel_Brushed",
+            "source_hash": "e576db89482a15e40721e68c67733e8f8bd843bb",
+            "target_url": "./SubUSDs/materials/Stainless_Steel_Brushed__Stainless_Steel_Brushed__v0.mdl",
+            "target_hash": "4e5a30473fd0bf690b9d48a14a573e549235aeb0"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Metal/textures/stainless_brushed_smudges.jpg",
+            "source_hash": "bd22acf0e2fe24c50955da74069a4c21c7342251",
+            "target_url": "./SubUSDs/textures/Stainless_Steel_Brushed/stainless_brushed_smudges.jpg",
+            "target_hash": "a9e741b02d1a9c8b72802ba6267ed3123217182d"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Metal/textures/stainless_brushed_multi_R_impurities_G_rough_B_dents.jpg",
+            "source_hash": "71cb86848d9b001b1c01b8a1314df343ebf6c30a",
+            "target_url": "./SubUSDs/textures/Stainless_Steel_Brushed/stainless_brushed_multi_R_impurities_G_rough_B_dents.jpg",
+            "target_hash": "8f2f57f6153caff65c7a67240756569140bee641"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Metal/textures/stainless_damages_norm.jpg",
+            "source_hash": "1831952e37ba0e0f66239201ae46c1ab31723e5b",
+            "target_url": "./SubUSDs/textures/Stainless_Steel_Brushed/stainless_damages_norm.jpg",
+            "target_hash": "2d357403d39b52b7de2a121051a089cce5141b94"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Metal/textures/stainless_brushed_norm.jpg",
+            "source_hash": "59a756b9c1a5378b1b5ec040614eaa3f1a670302",
+            "target_url": "./SubUSDs/textures/Stainless_Steel_Brushed/stainless_brushed_norm.jpg",
+            "target_hash": "c02f2b980bfa04852ed414d37f9e67bdaa91d910"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Metal/textures/atlas_02_norm_dist.png",
+            "source_hash": "dd67dd9e8bc50a888b1c0e3eb179a432246feeb3",
+            "target_url": "./SubUSDs/textures/Stainless_Steel_Brushed/atlas_02_norm_dist.png",
+            "target_hash": "b42bd8324b485f0b339560f305a84c01c8a40d36"
+        }
+    ]
+}
